@@ -216,7 +216,7 @@ end
 ### Results
 All test cases passed successfully, confirming the correctness of the processor's design.
 
-![FuncComp](https://github.com/activif99/RISC-V_Processor/blob/main/documentation/images/Wave.jpg?raw=true)
+![FuncComp](https://github.com/activif99/RISC-V_Processor/blob/main/documentation/images/Wave.JPG?raw=true)
 
 ---
 
@@ -224,10 +224,8 @@ All test cases passed successfully, confirming the correctness of the processor'
 
 ### Running the Code
 1. Clone this repository.  
-2. Use any Verilog simulator (e.g., ModelSim, Vivado, or Icarus Verilog) to simulate the code.  
-3. Load the test program into the **Instruction Memory** module.  
+2. Use any Verilog simulator (e.g., ModelSim, Vivado, or Icarus Verilog) to simulate the code, I used ModelSim.
+3. Start a simulation with `top_tb_PLS` in the file `P_initialised.v` as the top module.  
 4. Observe the simulation results to verify processor behavior.
 
 
-
-Feel free to use and modify this code for your projects. Contributions and suggestions are welcome!
