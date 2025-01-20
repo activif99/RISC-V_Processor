@@ -8,11 +8,10 @@ input      [31:0] PC_in;
 output reg [31:0] PC_out;
 
 always @(posedge clk or posedge reset) begin
-    if (reset) begin
+    if (reset) 
         PC_out <= 32'b00;
     else
         PC_out <= PC_in; 
-    end        
 end
 
 endmodule
@@ -44,9 +43,9 @@ always@(posedge clk or posedge reset) begin
         for(k=0;k<64;k=k+1) begin
             I_mem[k] <= 32'b00;
         end
+    end
     else
         instruction_out <= I_mem[read_address];
-    end
 end
 
 endmodule
@@ -66,7 +65,7 @@ reg [31:0] Registers[31:0];
 always@(posedge clk or posedge reset) begin
     if (reset) begin
         for(k=0;k<32;k=k+1) begin
-            Registers <= 32'b00;
+            Registers[k] <= 32'b00;
         end
     end
     else if(RegWrite) begin
@@ -74,8 +73,8 @@ always@(posedge clk or posedge reset) begin
     end
 end
 
-assign Read_data1 <= Registers[Rs1];
-assign Read_data2 <= Registers[Rs2];
+assign Read_data1 = Registers[Rs1];
+assign Read_data2 = Registers[Rs2];
 
 endmodule
 // ----------------------------------------------------------------------------------------------------
@@ -162,7 +161,7 @@ endmodule
 module ALU_Control(fun7, fun3, ALUOp, Control_out);
 
 input fun7;
-input [2:0] fun3
+input [2:0] fun3;
 input [1:0] ALUOp;
 output reg [3:0] Control_out;
 
@@ -274,3 +273,22 @@ endmodule
 // ----------------------------------------------------------------------------------------------------
 
 // ------------ Testbench -----------------------------------------------------------------------------
+module top_tb;
+
+reg clk, reset;
+
+top dut( .clk(clk), .reset(reset));
+
+initial begin
+    clk = 0;
+    reset = 1;
+    #5;
+    reset = 0;
+    #400;
+end
+
+always begin
+    #5 clk = ~clk;
+end
+
+endmodule
