@@ -159,6 +159,9 @@ always @(*) begin
         
         7'b0010011: // I-type (e.g., Immediate ALU operations)
             ImmExt = {{20{instruction[31]}}, instruction[31:20]};
+
+        default: // Default case to handle invalid opcodes
+            ImmExt = 32'b0;
     endcase
 end
 
@@ -178,6 +181,8 @@ always@(*) begin
         7'b0000011: {ALUSrc, MemtoReg, RegWrite, MemRead, MemWrite, branch, ALUOp} <= 8'b111100_00;
         7'b0100011: {ALUSrc, MemtoReg, RegWrite, MemRead, MemWrite, branch, ALUOp} <= 8'b100010_00;
         7'b1100011: {ALUSrc, MemtoReg, RegWrite, MemRead, MemWrite, branch, ALUOp} <= 8'b000001_01;
+        default: // Default case to handle invalid instructions
+            {ALUSrc, MemtoReg, RegWrite, MemRead, MemWrite, branch, ALUOp} <= 8'b000000_00;
     endcase
 end
 
@@ -342,9 +347,9 @@ top dut( .clk(clk), .reset(reset));
 initial begin
     clk = 0;
     reset = 1;
-    #5;
+    #10;
     reset = 0;
-    #400;
+    #200;
 end
 
 always begin
