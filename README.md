@@ -1,6 +1,6 @@
-# RISC-V Processor
+# Single cycle RISC-V Processor
 
-This repository contains the Verilog code for a custom processor, designed and verified as part of a project. The processor supports a subset of RISC-V instructions and includes all major components of a basic processor pipeline. Below, you will find a detailed description of each module and its functionality, as well as an overview of the design and verification process.
+This repository contains the Verilog code for a custom Single cycle RISC-V processor, designed and verified as part of my next big project. The processor supports a subset of RISC-V instructions and includes all major components of a basic processor pipeline. Below, you will find a detailed description of each module and its functionality, as well as an overview of the design and verification process.
 
 ---
 
@@ -25,11 +25,11 @@ This repository contains the Verilog code for a custom processor, designed and v
 
 The processor consists of several interconnected modules to perform basic operations such as arithmetic calculations, memory access, and branching. It is designed to execute RISC-V instructions efficiently and includes the following features:
 
-![FuncComp](https://github.com/activif99/RISC-V_Processor/blob/main/documentation/images/DataPath.PNG?raw=true)
-
 - Support for R-type, I-type, L-type, S-type, and SB-type instructions.
 - A modular design approach for scalability and ease of debugging.
 - Initialization of instruction and data memory with test cases to validate the processor's functionality.
+
+![FuncComp](https://github.com/activif99/RISC-V_Processor/blob/main/documentation/images/DataPath.PNG?raw=true)
 
 ---
 
