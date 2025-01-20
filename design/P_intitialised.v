@@ -51,21 +51,21 @@ always@(posedge clk or posedge reset) begin
     //R-type
         I_mem[0] = 32'b00000000000000000000000000000000 ; // no operation
         I_mem[4] = 32'b0000000_11001_10000_000_01101_0110011 ; // add x13, x16, x25
-        I_mem[8] = 32'b0100000_00011_01000_000_00101_0110011 ; // sub x13, x16, x25
+        I_mem[8] = 32'b0100000_00011_01000_000_00101_0110011 ; // sub x5, x8, x3
         I_mem[12] = 32'b0000000_00011_00010_111_00001_0110011 ; // and x1, x2, x3
         I_mem[16] = 32'b0000000_00101_00011_110_00100_0110011 ; // or x4, x3, x5
 
     //I-type
         I_mem[20] = 32'b000000000011_10101_000_10110_0010011 ; // addi x22, x21, 3
-        I_mem[24] = 32'b010000000001_01000_110_01001_0010011 ; // ori x9, x8, 1
+        I_mem[24] = 32'b000000000001_01000_110_01001_0010011 ; // ori x9, x8, 1 *
 
     //L-type
-        I_mem[28] = 32'b000000001111_00101_010_01000_0000011 ; // lw x8, 15(x5)
-        I_mem[32] = 32'b010000000011_00011_010_01001_0000011 ; // lw x9, 3(x3)
+        I_mem[28] = 32'b000000001111_00010_010_01000_0000011 ; // lw x8, 15(x5)
+        I_mem[32] = 32'b000000000011_00011_010_01001_0000011 ; // lw x9, 3(x3)
 
     //S-type
-        I_mem[36] = 32'b0000000_01111_00101_010_01100_0100011 ; // sw x15, 12(x5)
-        I_mem[40] = 32'b0100000_01110_00110_010_01010_0100011 ; // sw x14, 10(x6)
+        I_mem[36] = 32'b0000000_01111_00011_010_01100_0100011 ; // sw x15, 12(x5)
+        I_mem[40] = 32'b0000000_01110_00110_010_01010_0100011 ; // sw x14, 10(x6)
 
     //SB-type
         I_mem[44] = 32'h00948663 ; // beq x9, x9, 12
@@ -83,17 +83,19 @@ input  [4:0] Rs1,Rs2,Rd;
 input  [31:0] Write_data;
 output [31:0] Read_data1, Read_data2;
 
-integer k;
+
 reg [31:0] Registers[31:0];
 
-//init
+assign Read_data1 = Registers[Rs1];
+assign Read_data2 = Registers[Rs2];
+
 initial begin
 Registers[0] = 0;
-Registers[1] = 4;
+Registers[1] = 3;
 Registers[2] = 2;
-Registers[3] = 24;
-Registers[4] = 4;
-Registers[5] = 1;
+Registers[3] = 12;
+Registers[4] = 20;
+Registers[5] = 3;
 Registers[6] = 44;
 Registers[7] = 4;
 Registers[8] = 2;
@@ -122,19 +124,19 @@ Registers[30] = 5;
 Registers[31] = 10;
 end
 
+integer k;
+
 always@(posedge clk or posedge reset) begin
-    if (reset) begin
+/*    if (reset) begin
         for(k=0;k<32;k=k+1) begin
             Registers[k] <= 32'b00;
         end
     end
-    else if(RegWrite) begin
+    else */ 
+        if(RegWrite) begin
         Registers[Rd] <= Write_data;
     end
 end
-
-assign Read_data1 = Registers[Rs1];
-assign Read_data2 = Registers[Rs2];
 
 endmodule
 // ----------------------------------------------------------------------------------------------------
@@ -149,19 +151,19 @@ output reg [31:0] ImmExt;
 always @(*) begin
     case (Opcode)
         7'b0000011: // I-type (e.g., Load)
-            ImmExt = {{20{instruction[31]}}, instruction[31:20]}; 
+            ImmExt <= {{20{instruction[31]}}, instruction[31:20]};   
         
         7'b0100011: // S-type (e.g., Store)
-            ImmExt = {{20{instruction[31]}}, instruction[31:25], instruction[11:7]}; 
+            ImmExt <= {{20{instruction[31]}}, instruction[31:25], instruction[11:7]}; 
         
         7'b1100011: // SB-type (e.g., Branch)
-            ImmExt = {{19{instruction[31]}}, instruction[31], instruction[7], instruction[30:25], instruction[11:8], 1'b0};
+            ImmExt <= {{19{instruction[31]}}, instruction[31], instruction[7], instruction[30:25], instruction[11:8], 1'b0};
         
         7'b0010011: // I-type (e.g., Immediate ALU operations)
-            ImmExt = {{20{instruction[31]}}, instruction[31:20]};
+            ImmExt <= {{20{instruction[31]}}, instruction[31:20]};
 
         default: // Default case to handle invalid opcodes
-            ImmExt = 32'b0;
+            ImmExt <= 32'b00;
     endcase
 end
 
@@ -178,6 +180,7 @@ output reg [1:0] ALUOp;
 always@(*) begin
     case(instruction)
         7'b0110011: {ALUSrc, MemtoReg, RegWrite, MemRead, MemWrite, branch, ALUOp} <= 8'b001000_10;
+        7'b0010011: {ALUSrc, MemtoReg, RegWrite, MemRead, MemWrite, branch, ALUOp} <= 8'b101100_00;
         7'b0000011: {ALUSrc, MemtoReg, RegWrite, MemRead, MemWrite, branch, ALUOp} <= 8'b111100_00;
         7'b0100011: {ALUSrc, MemtoReg, RegWrite, MemRead, MemWrite, branch, ALUOp} <= 8'b100010_00;
         7'b1100011: {ALUSrc, MemtoReg, RegWrite, MemRead, MemWrite, branch, ALUOp} <= 8'b000001_01;
@@ -338,22 +341,22 @@ endmodule
 // ----------------------------------------------------------------------------------------------------
 
 // ------------ Testbench -----------------------------------------------------------------------------
-module top_tb;
+module top_tb_PLS;
 
 reg clk, reset;
 
 top dut( .clk(clk), .reset(reset));
 
-initial begin
-    clk = 0;
-    reset = 1;
-    #10;
-    reset = 0;
-    #200;
-end
+    // Clock generation
+    initial begin
+        clk = 0;
+        forever #5 clk = ~clk; // 10ns clock period
+    end
 
-always begin
-    #5 clk = ~clk;
-end
+    // Test sequence
+    initial begin
+        reset = 1; #10; // Assert reset
+        reset = 0; #10; // Deassert reset
+    end
 
 endmodule
