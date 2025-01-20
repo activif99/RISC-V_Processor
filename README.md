@@ -25,7 +25,7 @@ This repository contains the Verilog code for a custom processor, designed and v
 
 The processor consists of several interconnected modules to perform basic operations such as arithmetic calculations, memory access, and branching. It is designed to execute RISC-V instructions efficiently and includes the following features:
 
-![FuncComp](https://github.com/activif99/;;;;?raw=true)
+![FuncComp](https://github.com/activif99/RISC-V_Processor/blob/main/documentation/images/DataPath.PNG?raw=true)
 
 - Support for R-type, I-type, L-type, S-type, and SB-type instructions.
 - A modular design approach for scalability and ease of debugging.
@@ -37,6 +37,8 @@ The processor consists of several interconnected modules to perform basic operat
 
 ### 1. Program Counter
 The **Program Counter (PC)** module is responsible for maintaining the address of the current instruction being executed. It increments to point to the next instruction or updates based on branch instructions.
+
+![FuncComp](https://github.com/activif99/RISC-V_Processor/blob/main/documentation/images/PC.PNG?raw=true)
 
 **Inputs**:  
 - `clk`: Clock signal.  
@@ -51,6 +53,8 @@ The **Program Counter (PC)** module is responsible for maintaining the address o
 ### 2. PC + 4
 The **PC + 4** module calculates the next instruction address by incrementing the current PC value by 4.
 
+![FuncComp](https://github.com/activif99/RISC-V_Processor/blob/main/documentation/images/PC+4.PNG?raw=true)
+
 **Inputs**:  
 - `fromPC`: Current PC value.
 
@@ -61,6 +65,8 @@ The **PC + 4** module calculates the next instruction address by incrementing th
 
 ### 3. Instruction Memory
 The **Instruction Memory** module stores the program instructions. It supports initialization with specific test cases to verify the processor's functionality.
+
+![FuncComp](https://github.com/activif99/RISC-V_Processor/blob/main/documentation/images/InstructionMem.PNG?raw=true)
 
 **Inputs**:  
 - `clk`: Clock signal.  
@@ -77,6 +83,8 @@ Supported instructions include R-type (e.g., `add`, `sub`), I-type (`addi`, `ori
 ### 4. Register File
 The **Register File** stores and provides register values for computation. It supports read and write operations based on control signals.
 
+![FuncComp](https://github.com/activif99/RISC-V_Processor/blob/main/documentation/images/RegFile.PNG?raw=true)
+
 **Inputs**:  
 - `clk`, `reset`: Clock and reset signals.  
 - `RegWrite`: Control signal to enable writing to registers.  
@@ -91,6 +99,8 @@ The **Register File** stores and provides register values for computation. It su
 ### 5. Immediate Generator
 The **Immediate Generator** decodes immediate values from instructions for I-type, S-type, and SB-type formats.
 
+![FuncComp](https://github.com/activif99/RISC-V_Processor/blob/main/documentation/images/ImmGen0.PNG?raw=true)
+
 **Inputs**:  
 - `Opcode`: Instruction type.  
 - `instruction`: The current instruction.
@@ -98,12 +108,14 @@ The **Immediate Generator** decodes immediate values from instructions for I-typ
 **Output**:  
 - `ImmExt`: The sign-extended immediate value.
 
-![FuncComp](https://github.com/activif99/;;;;?raw=true)
+![FuncComp](https://github.com/activif99/RISC-V_Processor/blob/main/documentation/images/ImmGen1.PNG?raw=true)
 
 ---
 
 ### 6. Control Unit
 The **Control Unit** generates control signals for the processor based on the opcode of the instruction. It handles operations such as branching, memory access, and ALU operations.
+
+![FuncComp](https://github.com/activif99/RISC-V_Processor/blob/main/documentation/images/ControlUnit0.PNG?raw=true)
 
 **Input**:  
 - `instruction`: Opcode of the instruction.
@@ -111,12 +123,14 @@ The **Control Unit** generates control signals for the processor based on the op
 **Outputs**:  
 - Various control signals, including `branch`, `MemRead`, `MemWrite`, `ALUSrc`, and `ALUOp`.
 
-![FuncComp](https://github.com/activif99/;;;;?raw=true)
+![FuncComp](https://github.com/activif99/RISC-V_Processor/blob/main/documentation/images/ControlUnit.PNG?raw=true)
 
 ---
 
 ### 7. ALU (Arithmetic Logic Unit)
 The **ALU** performs arithmetic and logical operations based on the `ALUOp` control signal. It supports operations such as addition, subtraction, AND, and OR.
+
+![FuncComp](https://github.com/activif99/RISC-V_Processor/blob/main/documentation/images/ALU1.PNG?raw=true)
 
 **Inputs**:  
 - `input1`, `input2`: Operands.  
@@ -126,12 +140,14 @@ The **ALU** performs arithmetic and logical operations based on the `ALUOp` cont
 - `result`: Result of the operation.  
 - `Zero`: Flag indicating if the result is zero.
 
-![FuncComp](https://github.com/activif99/;;;;?raw=true)
+![FuncComp](https://github.com/activif99/RISC-V_Processor/blob/main/documentation/images/ALU2.PNG?raw=true)
 
 ---
 
 ### 8. Data Memory
 The **Data Memory** module handles memory operations, including load (`lw`) and store (`sw`) instructions.
+
+![FuncComp](https://github.com/activif99/RISC-V_Processor/blob/main/documentation/images/DataMem.PNG?raw=true)
 
 **Inputs**:  
 - `clk`, `reset`: Clock and reset signals.  
