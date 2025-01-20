@@ -24,6 +24,9 @@ This repository contains the Verilog code for a custom processor, designed and v
 ## Design Overview
 
 The processor consists of several interconnected modules to perform basic operations such as arithmetic calculations, memory access, and branching. It is designed to execute RISC-V instructions efficiently and includes the following features:
+
+![FuncComp](https://github.com/activif99/;;;;?raw=true)
+
 - Support for R-type, I-type, L-type, S-type, and SB-type instructions.
 - A modular design approach for scalability and ease of debugging.
 - Initialization of instruction and data memory with test cases to validate the processor's functionality.
@@ -95,6 +98,8 @@ The **Immediate Generator** decodes immediate values from instructions for I-typ
 **Output**:  
 - `ImmExt`: The sign-extended immediate value.
 
+![FuncComp](https://github.com/activif99/;;;;?raw=true)
+
 ---
 
 ### 6. Control Unit
@@ -105,6 +110,8 @@ The **Control Unit** generates control signals for the processor based on the op
 
 **Outputs**:  
 - Various control signals, including `branch`, `MemRead`, `MemWrite`, `ALUSrc`, and `ALUOp`.
+
+![FuncComp](https://github.com/activif99/;;;;?raw=true)
 
 ---
 
@@ -118,6 +125,8 @@ The **ALU** performs arithmetic and logical operations based on the `ALUOp` cont
 **Outputs**:  
 - `result`: Result of the operation.  
 - `Zero`: Flag indicating if the result is zero.
+
+![FuncComp](https://github.com/activif99/;;;;?raw=true)
 
 ---
 
@@ -144,6 +153,8 @@ The processor was verified using test programs stored in the **Instruction Memor
 - Accurate memory read and write operations.
 - Correct branching and program counter updates.
 
+
+
 ### Test Cases
 1. **Arithmetic Operations**: Validated addition, subtraction, AND, and OR operations using R-type instructions.  
 2. **Immediate Operations**: Verified addi and ori instructions.  
@@ -152,6 +163,8 @@ The processor was verified using test programs stored in the **Instruction Memor
 
 ### Results
 All test cases passed successfully, confirming the correctness of the processor's design.
+
+![FuncComp](https://github.com/activif99/;;;;?raw=true)
 
 ---
 
