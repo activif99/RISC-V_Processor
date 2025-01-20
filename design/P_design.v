@@ -89,16 +89,19 @@ output reg [31:0] ImmExt;
 always @(*) begin
     case (Opcode)
         7'b0000011: // I-type (e.g., Load)
-            ImmExt = {{20{instruction[31]}}, instruction[31:20]}; 
+            ImmExt <= {{20{instruction[31]}}, instruction[31:20]};   
         
         7'b0100011: // S-type (e.g., Store)
-            ImmExt = {{20{instruction[31]}}, instruction[31:25], instruction[11:7]}; 
+            ImmExt <= {{20{instruction[31]}}, instruction[31:25], instruction[11:7]}; 
         
         7'b1100011: // SB-type (e.g., Branch)
-            ImmExt = {{19{instruction[31]}}, instruction[31], instruction[7], instruction[30:25], instruction[11:8], 1'b0};
+            ImmExt <= {{19{instruction[31]}}, instruction[31], instruction[7], instruction[30:25], instruction[11:8], 1'b0};
         
         7'b0010011: // I-type (e.g., Immediate ALU operations)
-            ImmExt = {{20{instruction[31]}}, instruction[31:20]};
+            ImmExt <= {{20{instruction[31]}}, instruction[31:20]};
+
+        default: // Default case to handle invalid opcodes
+            ImmExt <= 32'b00;
     endcase
 end
 
@@ -115,9 +118,12 @@ output reg [1:0] ALUOp;
 always@(*) begin
     case(instruction)
         7'b0110011: {ALUSrc, MemtoReg, RegWrite, MemRead, MemWrite, branch, ALUOp} <= 8'b001000_10;
+        7'b0010011: {ALUSrc, MemtoReg, RegWrite, MemRead, MemWrite, branch, ALUOp} <= 8'b101100_00;
         7'b0000011: {ALUSrc, MemtoReg, RegWrite, MemRead, MemWrite, branch, ALUOp} <= 8'b111100_00;
         7'b0100011: {ALUSrc, MemtoReg, RegWrite, MemRead, MemWrite, branch, ALUOp} <= 8'b100010_00;
         7'b1100011: {ALUSrc, MemtoReg, RegWrite, MemRead, MemWrite, branch, ALUOp} <= 8'b000001_01;
+        default: // Default case to handle invalid instructions
+            {ALUSrc, MemtoReg, RegWrite, MemRead, MemWrite, branch, ALUOp} <= 8'b000000_00;
     endcase
 end
 
@@ -271,24 +277,3 @@ Adder myAdder( .in_1(PC_top), .in_2(ImmExt_top), .adder_out(adder_top));
 endmodule
 // ----------------------------------------------------------------------------------------------------
 // ----------------------------------------------------------------------------------------------------
-
-// ------------ Testbench -----------------------------------------------------------------------------
-module top_tb;
-
-reg clk, reset;
-
-top dut( .clk(clk), .reset(reset));
-
-initial begin
-    clk = 0;
-    reset = 1;
-    #5;
-    reset = 0;
-    #400;
-end
-
-always begin
-    #5 clk = ~clk;
-end
-
-endmodule
