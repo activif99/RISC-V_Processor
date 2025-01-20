@@ -216,7 +216,7 @@ end
 ### Results
 All test cases passed successfully, confirming the correctness of the processor's design.
 
-![FuncComp](https://github.com/activif99/RISC-V_Processor/blob/main/documentation/images/Wave.JPG?raw=true)
+![FuncComp](https://github.com/activif99/RISC-V_Processor/blob/main/documentation/images/Wave.jpeg?raw=true)
 
 ---
 
